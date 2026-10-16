@@ -1,0 +1,51 @@
+digraph snail_fsm {
+    rankdir=LR;
+    node [shape=circle, fontname="Arial", fontsize=12];
+    edge [fontname="Arial", fontsize=10];
+
+    // Точка входа
+    start [shape=point, width=0.1];
+    start -> S0;
+
+    // Состояния
+    S0 [label="S0\n—\ny=0"];
+    S1 [label="S1\nA\ny=0"];
+    S2 [label="S2\nAN\ny=0"];
+    S3 [label="S3\nAND\ny=0"];
+    S4 [label="S4\nANDR\ny=0"];
+    S5 [label="S5\nANDRE\ny=0"];
+    S6 [label="S6\nANDREY\ny=1", shape=doublecircle, style=filled, fillcolor=lightgreen];
+
+    // Из S0
+    S0 -> S1 [label="A / 0"];
+    S0 -> S0 [label="¬A / 0"];
+
+    // Из S1
+    S1 -> S2 [label="N / 0"];
+    S1 -> S1 [label="A / 0", style=dashed];
+    S1 -> S0 [label="¬A,¬N / 0", style=dotted];
+
+    // Из S2
+    S2 -> S3 [label="D / 0"];
+    S2 -> S1 [label="A / 0", style=dashed];
+    S2 -> S0 [label="¬A,¬D / 0", style=dotted];
+
+    // Из S3
+    S3 -> S4 [label="R / 0"];
+    S3 -> S1 [label="A / 0", style=dashed];
+    S3 -> S0 [label="¬A,¬R / 0", style=dotted];
+
+    // Из S4
+    S4 -> S5 [label="E / 0"];
+    S4 -> S1 [label="A / 0", style=dashed];
+    S4 -> S0 [label="¬A,¬E / 0", style=dotted];
+
+    // Из S5 — здесь происходит «магия»
+    S5 -> S6 [label="Y / 1", color=red, penwidth=2];
+    S5 -> S1 [label="A / 0", style=dashed];
+    S5 -> S0 [label="¬A,¬Y / 0", style=dotted];
+
+    // Из S6 — выход сбрасывается
+    S6 -> S1 [label="A / 0", style=dashed];
+    S6 -> S0 [label="¬A / 0", style=dotted];
+}
